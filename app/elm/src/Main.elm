@@ -9,6 +9,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Regex exposing (regex, contains)
+import Set
 
 
 main =
@@ -65,7 +66,7 @@ update msg model =
         AddTag tag ->
             let
                 newTags =
-                    tag :: model.tags
+                    Set.toList (Set.fromList (tag :: model.tags))
             in
                 ( { model | tags = newTags, inputTag = "" }, search newTags )
 
@@ -87,7 +88,7 @@ update msg model =
         FetchedTags (Ok tags) ->
             let
                 newTags =
-                    model.tags |> List.append tags
+                    Set.toList (Set.fromList (model.tags |> List.append tags))
             in
                 ( { model | tags = newTags }, search newTags )
 
