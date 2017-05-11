@@ -146,13 +146,18 @@ view model =
             , disabled (not (isValidEmail model.email))
             ]
             [ text "save" ]
-        , ul [] (model.searchResults |> List.map (\res -> (li [] [ span [] [ text res ] ])))
+        , ul [] (model.searchResults |> List.map searchResToLi)
         ]
 
 
 isValidEmail : String -> Bool
 isValidEmail email =
     contains (regex ".+@.+") email
+
+
+searchResToLi : String -> Html Msg
+searchResToLi res =
+    li [] [ span [] [ text res ] ]
 
 
 tagToLi : Tag -> Html Msg
