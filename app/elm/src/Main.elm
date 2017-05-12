@@ -66,7 +66,8 @@ update msg model =
         AddTag tag ->
             let
                 newTags =
-                    Set.toList (Set.fromList (tag :: model.tags))
+                    ([ tag ] |> List.append model.tags)
+                        |> distinct
             in
                 ( { model | tags = newTags, inputTag = "" }, search newTags )
 
@@ -88,7 +89,7 @@ update msg model =
         FetchedTags (Ok tags) ->
             let
                 newTags =
-                    Set.toList (Set.fromList (model.tags |> List.append tags))
+                    (tags |> List.append model.tags) |> distinct
             in
                 ( { model | tags = newTags }, search newTags )
 
