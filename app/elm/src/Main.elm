@@ -9,6 +9,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Regex exposing (regex, contains)
+import Set
 
 
 main =
@@ -65,7 +66,7 @@ update msg model =
         AddTag tag ->
             let
                 newTags =
-                    tag :: model.tags
+                    Set.toList (Set.fromList (tag :: model.tags))
             in
                 ( { model | tags = newTags, inputTag = "" }, search newTags )
 
@@ -87,7 +88,7 @@ update msg model =
         FetchedTags (Ok tags) ->
             let
                 newTags =
-                    model.tags |> List.append tags
+                    Set.toList (Set.fromList (model.tags |> List.append tags))
             in
                 ( { model | tags = newTags }, search newTags )
 
@@ -145,13 +146,18 @@ view model =
             , disabled (not (isValidEmail model.email))
             ]
             [ text "save" ]
-        , ul [] (model.searchResults |> List.map (\res -> (li [] [ span [] [ text res ] ])))
+        , ul [] (model.searchResults |> List.map searchResToLi)
         ]
 
 
 isValidEmail : String -> Bool
 isValidEmail email =
     contains (regex ".+@.+") email
+
+
+searchResToLi : String -> Html Msg
+searchResToLi res =
+    li [] [ span [] [ text res ] ]
 
 
 tagToLi : Tag -> Html Msg
