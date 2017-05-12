@@ -29,10 +29,11 @@ object Server extends App {
       complete(HttpEntity(`application/json`, """ok"""))
     }
 
-  case class SearchResult(results: List[String])
+  case class SearchResult(header: String, text: String, img: String)
+  case class SearchResults(results: List[SearchResult])
   val search: Route =
     (post & path("search")) {
-      complete(HttpEntity(`application/json`, SearchResult(List("suche1", "suche2", "suche3")).asJson.noSpaces))
+      complete(HttpEntity(`application/json`, SearchResults(List.fill(3)(SearchResult("Verkaufe Nova Prion 3", "Hier im Angebot mein neuer Nova Prion 3, da ich ihn nicht mehr gebrauchen kann. \n  Lg Franko", "https://www.royalcanin.com/~/media/Royal-Canin/Product-Categories/cat-adult-landing-hero.ashx"))).asJson.noSpaces))
     }
 
   Http().bindAndHandle(basePageRoute ~ fetchTags ~ saveTags ~ search, "0.0.0.0", 8080)
