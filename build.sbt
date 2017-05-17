@@ -8,7 +8,7 @@ inThisBuild(
     organization := "io.para"
   ))
 
-lazy val root = (project in file("."))
+lazy val `para-front` = (project in file("."))
   .aggregate(`server`)
   .settings(run := (run in `server` in Compile).evaluated)
 

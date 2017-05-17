@@ -9,7 +9,15 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Regex exposing (regex, contains)
-import Set
+import Css
+    exposing
+        ( flexDirection
+        , flexStart
+        , displayFlex
+        , alignItems
+        , column
+        )
+import Helper.Helpers exposing (distinct)
 
 
 main =
@@ -29,7 +37,14 @@ type alias Model =
     { tags : List Tag
     , inputTag : Tag
     , email : String
-    , searchResults : List String
+    , searchResults : List SearchResult
+    }
+
+
+type alias SearchResult =
+    { header : String
+    , text : String
+    , img : String
     }
 
 
@@ -43,7 +58,7 @@ type Msg
     | RemoveTag String
     | EmailChange String
     | FetchedTags (Result Http.Error (List Tag))
-    | FetchedSearchResults (Result Http.Error (List String))
+    | FetchedSearchResults (Result Http.Error (List SearchResult))
     | SavedEmail (Result Http.Error String)
     | Save (List Tag) String
 
@@ -66,7 +81,8 @@ update msg model =
         AddTag tag ->
             let
                 newTags =
-                    Set.toList (Set.fromList (tag :: model.tags))
+                    ([ tag ] |> List.append model.tags)
+                        |> distinct
             in
                 ( { model | tags = newTags, inputTag = "" }, search newTags )
 
@@ -88,7 +104,7 @@ update msg model =
         FetchedTags (Ok tags) ->
             let
                 newTags =
-                    Set.toList (Set.fromList (model.tags |> List.append tags))
+                    (tags |> List.append model.tags) |> distinct
             in
                 ( { model | tags = newTags }, search newTags )
 
@@ -119,34 +135,42 @@ update msg model =
 -- VIEW
 
 
+styles =
+    Css.asPairs >> Html.Attributes.style
+
+
 view : Model -> Html Msg
 view model =
-    div []
-        [ input
-            [ type_ "email"
-            , onInput EmailChange
-            , placeholder "email"
+    div [ class "container" ]
+        [ div [ class "col-md-9" ]
+            [ input
+                [ type_ "email"
+                , onInput EmailChange
+                , placeholder "email"
+                , class "form-control input-lg"
+                ]
+                []
+            , ul [] (model.tags |> List.map tagToLi)
+            , input
+                [ type_ "text"
+                , placeholder "tag"
+                , onInput InputTagState
+                , value model.inputTag
+                , class "form-control input-lg"
+                ]
+                []
+            , button
+                [ onClick (AddTag model.inputTag)
+                , disabled (model.inputTag |> String.isEmpty)
+                ]
+                [ text "+" ]
+            , button
+                [ onClick (Save model.tags model.email)
+                , disabled (not (isValidEmail model.email))
+                ]
+                [ text "save" ]
+            , ul [ class "list-group" ] (model.searchResults |> List.map searchResToLi)
             ]
-            []
-        , ul [] (model.tags |> List.map tagToLi)
-        , input
-            [ type_ "text"
-            , placeholder "tag"
-            , onInput InputTagState
-            , value model.inputTag
-            ]
-            []
-        , button
-            [ onClick (AddTag model.inputTag)
-            , disabled (model.inputTag |> String.isEmpty)
-            ]
-            [ text "+" ]
-        , button
-            [ onClick (Save model.tags model.email)
-            , disabled (not (isValidEmail model.email))
-            ]
-            [ text "save" ]
-        , ul [] (model.searchResults |> List.map searchResToLi)
         ]
 
 
@@ -155,14 +179,39 @@ isValidEmail email =
     contains (regex ".+@.+") email
 
 
-searchResToLi : String -> Html Msg
+searchResToLi : SearchResult -> Html Msg
 searchResToLi res =
-    li [] [ span [] [ text res ] ]
+    li
+        [ class "list-group-item" ]
+        [ div
+            [ styles
+                [ displayFlex
+                , alignItems flexStart
+                ]
+            ]
+            [ div
+                [ styles
+                    [ displayFlex
+                    , flexDirection column
+                    , alignItems flexStart
+                    ]
+                ]
+                [ span [] [ text res.header ]
+                , span [] [ text res.text ]
+                ]
+            , img [ src res.img, width 200 ] []
+            ]
+        ]
 
 
 tagToLi : Tag -> Html Msg
 tagToLi tag =
-    li []
+    li
+        [ styles
+            [ displayFlex
+            , alignItems flexStart
+            ]
+        ]
         [ button [ onClick (RemoveTag tag) ] [ text "-" ]
         , span [] [ text tag ]
         ]
@@ -215,9 +264,18 @@ decodeTags =
     Decode.at [ "tags" ] (Decode.list Decode.string)
 
 
-decodeSearchResults : Decode.Decoder (List String)
+decodeSearchResults : Decode.Decoder (List SearchResult)
 decodeSearchResults =
-    Decode.at [ "results" ] (Decode.list Decode.string)
+    Decode.at [ "results" ] (Decode.list decodesSearchResult)
+
+
+decodesSearchResult : Decode.Decoder SearchResult
+decodesSearchResult =
+    Decode.map3
+        SearchResult
+        (Decode.at [ "header" ] Decode.string)
+        (Decode.at [ "text" ] Decode.string)
+        (Decode.at [ "img" ] Decode.string)
 
 
 encodeTagsAndEmail : List Tag -> String -> Encode.Value
