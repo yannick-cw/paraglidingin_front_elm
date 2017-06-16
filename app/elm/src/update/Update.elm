@@ -5,7 +5,7 @@ import Json.Decode as Decode
 import Json.Encode as Encode
 
 import Model exposing (..)
-import Helper.Helpers exposing (distinct)
+import Helper.Helpers exposing (distinct, isValidEmail)
 import Regex exposing (regex, contains)
 import Http
 
@@ -67,11 +67,6 @@ update msg model =
         FetchedSearchResults (Err er) ->
             Debug.log (toString er)
                 ( model, Cmd.none )
-
-
-isValidEmail : String -> Bool
-isValidEmail email =
-    contains (regex ".+@.+") email
 
 
 tagsForEmail : String -> Cmd Msg

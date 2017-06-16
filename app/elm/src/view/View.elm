@@ -4,20 +4,9 @@ import Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
-import Regex exposing (regex, contains)
 import View.TagList
-import Css
-    exposing
-        ( flexDirection
-        , flexStart
-        , displayFlex
-        , alignItems
-        , column
-        )
-
-styles =
-    Css.asPairs >> Html.Attributes.style
-
+import View.SearchResultList
+import Helper.Helpers exposing (isValidEmail)
 
 view : Model -> Html Msg
 view model =
@@ -49,35 +38,6 @@ view model =
                 , disabled (not (isValidEmail model.email))
                 ]
                 [ text "save" ]
-            , ul [ class "list-group" ] (model.searchResults |> List.map searchResToLi)
+            , View.SearchResultList.view model
             ]
         ]
-
-searchResToLi : SearchResult -> Html Msg
-searchResToLi res =
-    li
-        [ class "list-group-item" ]
-        [ div
-            [ styles
-                [ displayFlex
-                , alignItems flexStart
-                ]
-            ]
-            [ div
-                [ styles
-                    [ displayFlex
-                    , flexDirection column
-                    , alignItems flexStart
-                    ]
-                ]
-                [ span [] [ text res.header ]
-                , span [] [ text res.text ]
-                ]
-            , img [ src res.img, width 200 ] []
-            ]
-        ]
-
--- TODO currently duplicate
-isValidEmail : String -> Bool
-isValidEmail email =
-    contains (regex ".+@.+") email

@@ -4,13 +4,10 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Model exposing (..)
 import Html.Events exposing (onClick)
-import Css
-    exposing
-        ( flexDirection
-        , flexStart
+import Css exposing (
+        flexStart
         , displayFlex
         , alignItems
-        , column
         )
 
 styles =
