@@ -19,7 +19,7 @@ view model =
                 , class "form-control input-lg"
                 ]
                 []
-            , View.TagList.view model
+            , View.TagList.view model.tags
             , input
                 [ type_ "text"
                 , placeholder "tag"

@@ -13,9 +13,9 @@ import Css exposing (
 styles =
     Css.asPairs >> Html.Attributes.style
 
-view : Model -> Html Msg
-view model =
-    ul [] (model.tags |> List.map tagToLi)
+view : List Tag -> Html Msg
+view tags =
+    ul [] (tags |> List.map tagToLi)
 
 
 tagToLi : Tag -> Html Msg
