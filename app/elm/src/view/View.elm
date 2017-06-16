@@ -1,5 +1,3 @@
--- view/View.elm
-
 module View exposing (view)
 
 import Model exposing (..)
@@ -7,7 +5,7 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Regex exposing (regex, contains)
-
+import View.TagList
 import Css
     exposing
         ( flexDirection
@@ -32,7 +30,7 @@ view model =
                 , class "form-control input-lg"
                 ]
                 []
-            , ul [] (model.tags |> List.map tagToLi)
+            , View.TagList.view model
             , input
                 [ type_ "text"
                 , placeholder "tag"
@@ -78,20 +76,6 @@ searchResToLi res =
             , img [ src res.img, width 200 ] []
             ]
         ]
-
-
-tagToLi : Tag -> Html Msg
-tagToLi tag =
-    li
-        [ styles
-            [ displayFlex
-            , alignItems flexStart
-            ]
-        ]
-        [ button [ onClick (RemoveTag tag) ] [ text "-" ]
-        , span [] [ text tag ]
-        ]
-
 
 -- TODO currently duplicate
 isValidEmail : String -> Bool
