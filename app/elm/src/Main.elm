@@ -2,16 +2,16 @@ module Main exposing (..)
 
 import Html
 
-import View
-import Update
+import View exposing (view)
+import Update exposing (update)
 import Model exposing (..)
 
 
 main =
     Html.program
         { init = init
-        , view = View.view
-        , update = Update.update
+        , view = view
+        , update = update
         , subscriptions = subscriptions
         }
 
