@@ -38,6 +38,6 @@ view model =
                 , disabled (not (isValidEmail model.email))
                 ]
                 [ text "save" ]
-            , View.SearchResultList.view model
+            , View.SearchResultList.view model.searchResults
             ]
         ]

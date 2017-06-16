@@ -15,9 +15,9 @@ import Css
 styles =
     Css.asPairs >> Html.Attributes.style
 
-view : Model -> Html Msg
-view model =
-    ul [ class "list-group" ] (model.searchResults |> List.map searchResToLi)
+view : List SearchResult -> Html Msg
+view searchResults =
+    ul [ class "list-group" ] (searchResults |> List.map searchResToLi)
 
 searchResToLi : SearchResult -> Html Msg
 searchResToLi res =
