@@ -1,6 +1,7 @@
 module Helper.Helpers exposing (..)
 
 import List exposing (..)
+import Regex exposing (regex, contains)
 
 
 distinct : List a -> List a
@@ -14,3 +15,8 @@ dropIfExists a acc =
         acc
     else
         a :: acc
+
+
+isValidEmail : String -> Bool
+isValidEmail email =
+    contains (regex ".+@.+") email

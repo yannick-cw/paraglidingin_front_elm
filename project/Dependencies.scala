@@ -17,6 +17,8 @@ object Dependencies {
 
   val serverDependencies = Seq(
     akkaHttp,
+    "org.typelevel" % "cats-core_2.12" % "0.9.0",
+    "com.slamdata" %% "matryoshka-core" % "0.18.3",
     akkaTestkit % Test
   ) ++ circe
 }
