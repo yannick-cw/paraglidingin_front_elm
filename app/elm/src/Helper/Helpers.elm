@@ -3,6 +3,7 @@ module Helper.Helpers exposing (..)
 import List exposing (..)
 import Regex exposing (regex, contains)
 
+
 distinct : List a -> List a
 distinct list =
     (list |> (List.foldl dropIfExists [])) |> reverse
@@ -14,6 +15,7 @@ dropIfExists a acc =
         acc
     else
         a :: acc
+
 
 isValidEmail : String -> Bool
 isValidEmail email =

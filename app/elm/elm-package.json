@@ -5,9 +5,6 @@
     "license": "BSD3",
     "source-directories": [
         "src",
-        "src/view",
-        "src/model",
-        "src/update",
         "test"
     ],
     "exposed-modules": [],

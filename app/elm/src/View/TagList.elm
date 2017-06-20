@@ -2,7 +2,7 @@ module View.TagList exposing (view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Model exposing (..)
+import Model.Model exposing (..)
 import Html.Events exposing (onClick)
 import Css exposing (
         flexStart

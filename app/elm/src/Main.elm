@@ -1,10 +1,9 @@
 module Main exposing (..)
 
 import Html
-
-import View exposing (view)
-import Update exposing (update)
-import Model exposing (..)
+import View.Page exposing (view)
+import Update.Update exposing (update)
+import Model.Model exposing (..)
 
 
 main =
@@ -18,6 +17,7 @@ main =
 
 
 -- SUBSCRIPTIONS
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =

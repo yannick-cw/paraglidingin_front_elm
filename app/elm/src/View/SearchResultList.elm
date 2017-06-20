@@ -1,6 +1,6 @@
 module View.SearchResultList exposing (view)
 
-import Model exposing (..)
+import Model.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Css

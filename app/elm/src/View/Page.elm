@@ -1,12 +1,13 @@
-module View exposing (view)
+module View.Page exposing (view)
 
-import Model exposing (..)
+import Model.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import View.TagList
 import View.SearchResultList
 import Helper.Helpers exposing (isValidEmail)
+
 
 view : Model -> Html Msg
 view model =

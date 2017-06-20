@@ -1,10 +1,11 @@
-module Update exposing (update)
+module Update.Update exposing (update)
 
 import Json.Decode exposing (field)
 import Json.Decode as Decode
 import Json.Encode as Encode
-
-import Model exposing (..)
+import Model.Model exposing (..)
+import Request.Tags exposing (..)
+import Request.Search exposing (search)
 import Helper.Helpers exposing (distinct, isValidEmail)
 import Regex exposing (regex, contains)
 import Http
@@ -27,7 +28,7 @@ update msg model =
         RemoveTag tag ->
             let
                 newTags =
-                   List.filter ((/=) tag) model.tags
+                    List.filter ((/=) tag) model.tags
             in
                 ( { model | tags = newTags }, search newTags )
 
@@ -67,77 +68,3 @@ update msg model =
         FetchedSearchResults (Err er) ->
             Debug.log (toString er)
                 ( model, Cmd.none )
-
-
-tagsForEmail : String -> Cmd Msg
-tagsForEmail email =
-    let
-        url =
-            "/email/" ++ email
-
-        request =
-            Http.get url decodeTags
-    in
-        Http.send FetchedTags request
-
-
-saveTags : List Tag -> String -> Cmd Msg
-saveTags tags email =
-    let
-        url =
-            "/save"
-
-        body =
-            (encodeTagsAndEmail tags email) |> Http.jsonBody
-
-        request =
-            Http.post url body Decode.string
-    in
-        Http.send SavedEmail request
-
-
-search : List Tag -> Cmd Msg
-search tags =
-    let
-        url =
-            "/search"
-
-        body =
-            (encodeTags tags) |> Http.jsonBody
-
-        request =
-            Http.post url body decodeSearchResults
-    in
-        Http.send FetchedSearchResults request
-
-
-decodeTags : Decode.Decoder (List Tag)
-decodeTags =
-    Decode.at [ "tags" ] (Decode.list Decode.string)
-
-
-decodeSearchResults : Decode.Decoder (List SearchResult)
-decodeSearchResults =
-    Decode.at [ "results" ] (Decode.list decodesSearchResult)
-
-
-decodesSearchResult : Decode.Decoder SearchResult
-decodesSearchResult =
-    Decode.map3
-        SearchResult
-        (Decode.at [ "header" ] Decode.string)
-        (Decode.at [ "text" ] Decode.string)
-        (Decode.at [ "img" ] Decode.string)
-
-
-encodeTagsAndEmail : List Tag -> String -> Encode.Value
-encodeTagsAndEmail tags email =
-    Encode.object
-        [ ( "email", Encode.string email )
-        , ( "tags", encodeTags tags )
-        ]
-
-
-encodeTags : List Tag -> Encode.Value
-encodeTags tags =
-    Encode.object [ ( "tags", Encode.list (tags |> List.map Encode.string) ) ]
