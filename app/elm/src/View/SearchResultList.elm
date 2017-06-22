@@ -3,6 +3,7 @@ module View.SearchResultList exposing (view)
 import Model.Model exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
+import Helper.Helpers exposing (styles)
 import Css
     exposing
         ( flexDirection
@@ -12,12 +13,11 @@ import Css
         , column
         )
 
-styles =
-    Css.asPairs >> Html.Attributes.style
 
 view : List SearchResult -> Html Msg
 view searchResults =
     ul [ class "list-group" ] (searchResults |> List.map searchResToLi)
+
 
 searchResToLi : SearchResult -> Html Msg
 searchResToLi res =
