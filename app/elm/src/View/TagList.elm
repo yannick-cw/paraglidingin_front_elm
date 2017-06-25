@@ -8,6 +8,14 @@ import Css exposing (
         flexStart
         , displayFlex
         , alignItems
+        , padding
+        , px
+        , marginBottom
+        , marginLeft
+        , flexDirection
+        , row
+        , flexWrap
+        , maxHeight
         )
 
 styles =
@@ -15,7 +23,15 @@ styles =
 
 view : List Tag -> Html Msg
 view tags =
-    ul [] (tags |> List.map tagToLi)
+    ul [ styles
+        [ padding (px 0)
+        , displayFlex
+        , flexDirection Css.column
+        , flexWrap Css.wrap
+        , maxHeight (px 200)
+        ]
+     ]
+     (tags |> List.map tagToLi)
 
 
 tagToLi : Tag -> Html Msg
@@ -24,9 +40,10 @@ tagToLi tag =
         [ styles
             [ displayFlex
             , alignItems flexStart
+            , marginBottom (px 5)
             ]
         ]
-        [ button [ onClick (RemoveTag tag) ] [ text "-" ]
-        , span [] [ text tag ]
+        [ button [ onClick (RemoveTag tag), styles [ Css.width (px 29) ] ] [ text "-" ]
+        , span [ styles [ marginLeft (px 5) ]] [ text tag ]
         ]
 

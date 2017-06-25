@@ -16,7 +16,11 @@ import Css
 
 view : List SearchResult -> Html Msg
 view searchResults =
-    ul [ class "list-group" ] (searchResults |> List.map searchResToLi)
+    div []
+        [
+          h1 [] [ text "Offers" ]
+        , ul [ class "list-group" ] (searchResults |> List.map searchResToLi)
+        ]
 
 
 searchResToLi : SearchResult -> Html Msg
@@ -36,7 +40,7 @@ searchResToLi res =
                     , alignItems flexStart
                     ]
                 ]
-                [ span [] [ text res.header ]
+                [ h4 [] [ text res.header ]
                 , span [] [ text res.text ]
                 ]
             , img [ src res.img, width 200 ] []
