@@ -4,7 +4,7 @@ import Http
 
 init : ( Model, Cmd Msg )
 init =
-    ( Model [ "tag1", "tag2" ] "" "" [], Cmd.none )
+    ( Model [] "" "" [], Cmd.none )
 
 type alias Model =
     { tags : List Tag
