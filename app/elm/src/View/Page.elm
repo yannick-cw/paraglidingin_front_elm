@@ -28,28 +28,31 @@ page model =
         NotFoundRoute ->
             notFound
 
+
 home : Model -> Html Msg
 home model =
     div []
-         [ pageHeader
-         , div [ class "container"
-         , styles
-              [ Css.marginTop (Css.px 20)
-              , Css.marginBottom (Css.px 20)
-              ]
-             ]
-             [ div
-                 [ class "col-md-9"
-                 , styles [ Css.margin2 (Css.px 0) (Css.auto)]
-                 ]
-                 [ emailInput model
-                 , View.TagList.view model.tags
-                 , tagInput model.inputTag
-                 , View.SearchResultList.view model.searchResults
-                 ]
-             ]
-         ]
+        [ pageHeader
+        , div
+            [ class "container"
+            , styles
+                [ Css.marginTop (Css.px 20)
+                , Css.marginBottom (Css.px 20)
+                ]
+            ]
+            [ div
+                [ class "col-md-9"
+                , styles [ Css.margin2 (Css.px 0) (Css.auto) ]
+                ]
+                [ emailInput model
+                , View.TagList.view model.tags
+                , tagInput model.inputTag
+                , View.SearchResultList.view model.searchResults
+                ]
+            ]
+        ]
+
 
 notFound : Html Msg
 notFound =
-    div [] [ text "Something went wrong"]
+    div [] [ text "Something went wrong" ]
