@@ -16,16 +16,33 @@ import Css
 view : Model -> Html Msg
 view model =
     div []
+        [ page model ]
+
+
+page : Model -> Html Msg
+page model =
+    case model.route of
+        Home ->
+            home model
+
+        NotFoundRoute ->
+            notFound
+
+
+home : Model -> Html Msg
+home model =
+    div []
         [ pageHeader
-        , div [ class "container"
-         , styles
-             [ Css.marginTop (Css.px 20)
-             , Css.marginBottom (Css.px 20)
-             ]
+        , div
+            [ class "container"
+            , styles
+                [ Css.marginTop (Css.px 20)
+                , Css.marginBottom (Css.px 20)
+                ]
             ]
             [ div
                 [ class "col-md-9"
-                , styles [ Css.margin2 (Css.px 0) (Css.auto)]
+                , styles [ Css.margin2 (Css.px 0) (Css.auto) ]
                 ]
                 [ emailInput model
                 , View.TagList.view model.tags
@@ -34,3 +51,8 @@ view model =
                 ]
             ]
         ]
+
+
+notFound : Html Msg
+notFound =
+    div [] [ text "Something went wrong" ]

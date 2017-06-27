@@ -1,18 +1,28 @@
 module Model.Model exposing (..)
 
+import Navigation exposing (Location)
 import Http
 
-init : ( Model, Cmd Msg )
-init =
-    ( Model [] "" "" [], Cmd.none )
+initialModel : Route -> Model
+initialModel route =
+    { tags = []
+    , inputTag = ""
+    , email = ""
+    , searchResults = []
+    , route = route
+    }
 
 type alias Model =
     { tags : List Tag
     , inputTag : Tag
     , email : String
     , searchResults : List SearchResult
+    , route : Route
     }
 
+type Route
+  = Home
+  | NotFoundRoute
 
 type alias SearchResult =
     { header : String
@@ -34,4 +44,5 @@ type Msg
     | FetchedSearchResults (Result Http.Error (List SearchResult))
     | SavedEmail (Result Http.Error String)
     | Save (List Tag) String
+    | OnLocationChange Location
 

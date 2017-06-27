@@ -3,6 +3,7 @@ module Update.Update exposing (update)
 import Json.Decode exposing (field)
 import Json.Decode as Decode
 import Json.Encode as Encode
+import Routing exposing (parseLocation)
 import Model.Model exposing (..)
 import Request.Tags exposing (..)
 import Request.Search exposing (search)
@@ -68,3 +69,10 @@ update msg model =
         FetchedSearchResults (Err er) ->
             Debug.log (toString er)
                 ( model, Cmd.none )
+
+        OnLocationChange location ->
+            let
+                newRoute =
+                    parseLocation location
+            in
+                ( { model | route = newRoute }, Cmd.none )
