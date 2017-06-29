@@ -23,4 +23,4 @@ pageHeader =
                 , height (px 50)
                 ]
             ]
-            [ Html.text "Paragliding Scraper" ]
+            [ Html.text "FP-Paragliding Scraper" ]

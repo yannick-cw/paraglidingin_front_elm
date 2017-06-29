@@ -3,3 +3,8 @@ node_modules
 elm-stuff
 .idea
 elm.js
+para_elm_front.iml
+haskellServer.iml
+.ideaHaskellLib
+.stack-work
+cabal.config
