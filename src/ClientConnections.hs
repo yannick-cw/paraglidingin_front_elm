@@ -11,10 +11,9 @@ module ClientConnections where
 import           Api
 import           Control.Monad.Trans.Except
 import           Data.Aeson
-import           Data.Either
 import           Data.Proxy
 import           GHC.Generics
-import           Network.HTTP.Client        (defaultManagerSettings, newManager)
+import           Network.HTTP.Client        (newManager)
 import           Network.HTTP.Client.TLS
 import           Servant.API
 import           Servant.Client
@@ -55,8 +54,7 @@ errTo :: ServantError -> Either ServantErr Tags
 errTo _ = Right $ Tags []
 
 rightTo :: SearchRes -> Either ServantErr Tags
-rightTo _ = Right $ Tags [ "tag" ]
-
+rightTo _ = Right $ Tags ["tag"]
 
 clientExecute :: IO (Either ServantError SearchRes)
 clientExecute = do
