@@ -1,25 +1,23 @@
-{-# LANGUAGE DataKinds #-}
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE DataKinds             #-}
+{-# LANGUAGE DeriveGeneric         #-}
+{-# LANGUAGE FlexibleInstances     #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE OverloadedStrings     #-}
+{-# LANGUAGE ScopedTypeVariables   #-}
+{-# LANGUAGE TypeOperators         #-}
 
 module App where
 
-import Prelude ()
-import Prelude.Compat
-import Network.Wai.Handler.Warp
-import Servant
-import Api
-import ClientConnections
+import           Api
+import           ClientConnections
+import           Network.Wai.Handler.Warp
+import           Prelude                  ()
+import           Prelude.Compat
+import           Servant
 
 server :: Server ParaApi
-server = searchForTags
-  :<|> tagsForEmail
-  :<|> saveTagsForEmail
-  :<|>  serveDirectory "./var/www"
+server = searchForTags :<|> fetchTagsForEmail :<|> saveTagsForEmail :<|> serveDirectory "./var/www"
 
 startServer :: IO ()
 startServer = run 8081 $ serve paraApi server
+--startServer = clientExecute

@@ -20,6 +20,10 @@ library
                        , wai
                        , warp
                        , directory
+                       , http-client
+                       , servant-client
+                       , http-client-tls
+                       , transformers
   default-language:    Haskell2010
 
 executable haskellServer-exe
