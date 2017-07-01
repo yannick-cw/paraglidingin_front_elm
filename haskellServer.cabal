@@ -21,14 +21,10 @@ library
                        , servant-server
                        , base-compat
                        , aeson
-                       , attoparsec
-                       , string-conversions
                        , http-media
                        , wai
                        , warp
                        , directory
-                       , blaze-markup
-                       , blaze-html
   default-language:    Haskell2010
 
 executable haskellServer-exe

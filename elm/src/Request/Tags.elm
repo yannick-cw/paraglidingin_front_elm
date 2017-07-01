@@ -23,10 +23,10 @@ saveTags : List Tag -> String -> Cmd Msg
 saveTags tags email =
     let
         url =
-            "/save"
+            "/save/" ++ email
 
         body =
-            (encodeTagsAndEmail tags email) |> Http.jsonBody
+            (encodeTags tags) |> Http.jsonBody
 
         request =
             Http.post url body Decode.string
@@ -37,15 +37,6 @@ saveTags tags email =
 decodeTags : Decode.Decoder (List Tag)
 decodeTags =
     Decode.at [ "tags" ] (Decode.list Decode.string)
-
-
-encodeTagsAndEmail : List Tag -> String -> Encode.Value
-encodeTagsAndEmail tags email =
-    Encode.object
-        [ ( "email", Encode.string email )
-        , ( "tags", encodeTags tags )
-        ]
-
 
 encodeTags : List Tag -> Encode.Value
 encodeTags tags =
