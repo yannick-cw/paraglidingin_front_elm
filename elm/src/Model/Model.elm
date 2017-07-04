@@ -2,37 +2,31 @@ module Model.Model exposing (..)
 
 import Navigation exposing (Location)
 import Http
+import Generated.Models exposing (SearchResult, SearchResults, Saved, Tags)
+
 
 initialModel : Route -> Model
 initialModel route =
-    { tags = []
+    { tags = Tags []
     , inputTag = ""
     , email = ""
-    , searchResults = []
+    , searchResults = SearchResults []
     , route = route
     }
 
+
 type alias Model =
-    { tags : List Tag
-    , inputTag : Tag
+    { tags : Tags
+    , inputTag : String
     , email : String
-    , searchResults : List SearchResult
+    , searchResults : SearchResults
     , route : Route
     }
 
+
 type Route
-  = Home
-  | NotFoundRoute
-
-type alias SearchResult =
-    { header : String
-    , text : String
-    , img : String
-    }
-
-
-type alias Tag =
-    String
+    = Home
+    | NotFoundRoute
 
 
 type Msg
@@ -40,9 +34,8 @@ type Msg
     | AddTag String
     | RemoveTag String
     | EmailChange String
-    | FetchedTags (Result Http.Error (List Tag))
-    | FetchedSearchResults (Result Http.Error (List SearchResult))
-    | SavedEmail (Result Http.Error String)
-    | Save (List Tag) String
+    | FetchedTags (Result Http.Error Tags)
+    | FetchedSearchResults (Result Http.Error SearchResults)
+    | SavedEmail (Result Http.Error Saved)
+    | Save Tags String
     | OnLocationChange Location
-
