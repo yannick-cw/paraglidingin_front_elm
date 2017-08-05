@@ -9,9 +9,10 @@ type alias SearchResults =
     }
 
 type alias SearchResult =
-    { header : String
-    , text : String
-    , img : String
+    { title : String
+    , imgSrc : String
+    , href : String
+    , description : String
     }
 
 type alias Saved =

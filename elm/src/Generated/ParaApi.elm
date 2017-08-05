@@ -27,9 +27,10 @@ decodeSearchResults =
 decodeSearchResult : Decoder SearchResult
 decodeSearchResult =
     decode SearchResult
-        |> required "header" string
-        |> required "text" string
-        |> required "img" string
+        |> required "title" string
+        |> required "imgSrc" string
+        |> required "href" string
+        |> required "description" string
 
 encodeTags : Tags -> Json.Encode.Value
 encodeTags x =
