@@ -40,9 +40,9 @@ searchResToLi res =
                     , alignItems flexStart
                     ]
                 ]
-                [ h4 [] [ text res.header ]
-                , span [] [ text res.text ]
+                [ h4 [] [ text res.title ]
+                , span [] [ text res.description ]
                 ]
-            , img [ src res.img, width 200 ] []
+            , img [ src res.imgSrc, width 200 ] []
             ]
         ]
