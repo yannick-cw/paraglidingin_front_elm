@@ -15,10 +15,18 @@ import Css
         )
 
 
-view : SearchResults -> Html Msg
+view : List SearchResults -> Html Msg
 view searchResults =
     div []
-        [ h1 [] [ text "Offers" ]
+        ([ h1 [] [ text "Offers" ] ]
+            ++ List.map (multipleSearchResToLists) searchResults
+        )
+
+
+multipleSearchResToLists : SearchResults -> Html Msg
+multipleSearchResToLists searchResults =
+    div []
+        [ h2 [] [ text searchResults.searchRequest.tag ]
         , ul [ class "list-group" ] (searchResults.results |> List.map searchResToLi)
         ]
 

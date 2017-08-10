@@ -21,6 +21,7 @@ spec =
      toElmDecoderSource (Proxy :: Proxy Tags) :
      toElmDecoderSource (Proxy :: Proxy Saved) :
      toElmDecoderSource (Proxy :: Proxy SearchResults) :
+     toElmDecoderSource (Proxy :: Proxy SearchRequest) :
      toElmDecoderSource (Proxy :: Proxy SearchResult) :
      toElmEncoderSource (Proxy :: Proxy Tags) : generateElmForAPIWith myElmOpts (Proxy :: Proxy ParaApi))
 
@@ -30,6 +31,7 @@ modelSpec =
     ["Generated", "Models"]
     [ toElmTypeSource (Proxy :: Proxy Tags)
     , toElmTypeSource (Proxy :: Proxy SearchResults)
+    , toElmTypeSource (Proxy :: Proxy SearchRequest)
     , toElmTypeSource (Proxy :: Proxy SearchResult)
     , toElmTypeSource (Proxy :: Proxy Saved)
     ]

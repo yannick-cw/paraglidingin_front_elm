@@ -5,7 +5,12 @@ type alias Tags =
     }
 
 type alias SearchResults =
-    { results : List (SearchResult)
+    { searchRequest : SearchRequest
+    , results : List (SearchResult)
+    }
+
+type alias SearchRequest =
+    { tag : String
     }
 
 type alias SearchResult =

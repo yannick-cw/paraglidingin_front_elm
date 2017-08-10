@@ -22,7 +22,13 @@ decodeSaved =
 decodeSearchResults : Decoder SearchResults
 decodeSearchResults =
     decode SearchResults
+        |> required "searchRequest" decodeSearchRequest
         |> required "results" (list decodeSearchResult)
+
+decodeSearchRequest : Decoder SearchRequest
+decodeSearchRequest =
+    decode SearchRequest
+        |> required "tag" string
 
 decodeSearchResult : Decoder SearchResult
 decodeSearchResult =
@@ -38,7 +44,7 @@ encodeTags x =
         [ ( "tags", (Json.Encode.list << List.map Json.Encode.string) x.tags )
         ]
 
-postSearch : Tags -> Http.Request (SearchResults)
+postSearch : Tags -> Http.Request (List (SearchResults))
 postSearch body =
     Http.request
         { method =
@@ -53,7 +59,7 @@ postSearch body =
         , body =
             Http.jsonBody (encodeTags body)
         , expect =
-            Http.expectJson decodeSearchResults
+            Http.expectJson (list decodeSearchResults)
         , timeout =
             Nothing
         , withCredentials =
