@@ -15,12 +15,15 @@ import           Prelude.Compat
 import           Servant
 import           System.IO.Error
 
-server :: Server ParaApi
-server = searchForTags :<|> fetchTagsForEmail :<|> saveTagsForEmail :<|> serveDirectory "./var/www"
+paraServer :: Server ParaApi
+paraServer = searchForTags :<|> fetchTagsForEmail :<|> saveTagsForEmail
+
+server :: Server WebServiceApi
+server = paraServer :<|> serveDirectory "./var/www"
 
 startServer :: IO ()
 startServer =
   catchIOError
     (do _ <- print "running on 8081"
-        run 8081 $ serve paraApi server)
+        run 8081 $ serve wsApi server)
     (print . (++) "failed startup with: " . show)

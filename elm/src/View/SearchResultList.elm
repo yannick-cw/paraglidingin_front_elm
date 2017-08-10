@@ -1,6 +1,7 @@
 module View.SearchResultList exposing (view)
 
 import Model.Model exposing (..)
+import Generated.Models exposing (SearchResults, SearchResult)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Helper.Helpers exposing (styles)
@@ -14,12 +15,11 @@ import Css
         )
 
 
-view : List SearchResult -> Html Msg
+view : SearchResults -> Html Msg
 view searchResults =
     div []
-        [
-          h1 [] [ text "Offers" ]
-        , ul [ class "list-group" ] (searchResults |> List.map searchResToLi)
+        [ h1 [] [ text "Offers" ]
+        , ul [ class "list-group" ] (searchResults.results |> List.map searchResToLi)
         ]
 
 

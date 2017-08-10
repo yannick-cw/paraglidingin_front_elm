@@ -3,9 +3,11 @@ module View.TagList exposing (view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Model.Model exposing (..)
+import Generated.Models exposing (Tags)
 import Html.Events exposing (onClick)
-import Css exposing (
-        flexStart
+import Css
+    exposing
+        ( flexStart
         , displayFlex
         , alignItems
         , padding
@@ -18,23 +20,26 @@ import Css exposing (
         , maxHeight
         )
 
+
 styles =
     Css.asPairs >> Html.Attributes.style
 
-view : List Tag -> Html Msg
+
+view : Tags -> Html Msg
 view tags =
-    ul [ styles
-        [ padding (px 0)
-        , displayFlex
-        , flexDirection Css.column
-        , flexWrap Css.wrap
-        , maxHeight (px 200)
+    ul
+        [ styles
+            [ padding (px 0)
+            , displayFlex
+            , flexDirection Css.column
+            , flexWrap Css.wrap
+            , maxHeight (px 200)
+            ]
         ]
-     ]
-     (tags |> List.map tagToLi)
+        (tags.tags |> List.map tagToLi)
 
 
-tagToLi : Tag -> Html Msg
+tagToLi : String -> Html Msg
 tagToLi tag =
     li
         [ styles
@@ -44,6 +49,5 @@ tagToLi tag =
             ]
         ]
         [ button [ onClick (RemoveTag tag), styles [ Css.width (px 29) ] ] [ text "-" ]
-        , span [ styles [ marginLeft (px 5) ]] [ text tag ]
+        , span [ styles [ marginLeft (px 5) ] ] [ text tag ]
         ]
-

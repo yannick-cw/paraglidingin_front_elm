@@ -9,6 +9,7 @@ import Request.Tags exposing (..)
 import Request.Search exposing (search)
 import Helper.Helpers exposing (distinct, isValidEmail)
 import Regex exposing (regex, contains)
+import Generated.Models exposing (Tags)
 import Http
 
 
@@ -21,15 +22,17 @@ update msg model =
         AddTag tag ->
             let
                 newTags =
-                    ([ tag ] |> List.append model.tags)
-                        |> distinct
+                    Tags
+                        (([ tag ] |> List.append model.tags.tags)
+                            |> distinct
+                        )
             in
                 ( { model | tags = newTags, inputTag = "" }, search newTags )
 
         RemoveTag tag ->
             let
                 newTags =
-                    List.filter ((/=) tag) model.tags
+                    Tags (List.filter ((/=) tag) model.tags.tags)
             in
                 ( { model | tags = newTags }, search newTags )
 
@@ -44,7 +47,7 @@ update msg model =
         FetchedTags (Ok tags) ->
             let
                 newTags =
-                    (tags |> List.append model.tags) |> distinct
+                    Tags ((tags.tags |> List.append model.tags.tags) |> distinct)
             in
                 ( { model | tags = newTags }, search newTags )
 
@@ -56,7 +59,7 @@ update msg model =
             ( model, saveTags tags email )
 
         SavedEmail (Ok msg) ->
-            Debug.log msg
+            Debug.log msg.saved
                 ( model, Cmd.none )
 
         SavedEmail (Err er) ->

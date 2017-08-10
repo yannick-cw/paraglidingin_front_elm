@@ -25,8 +25,8 @@ searchForTags _ = return $ SearchResults [SearchResult "header" "text" "img.com"
 tagsForEmail :: String -> Handler Tags
 tagsForEmail _ = return $ Tags ["tag1", "tag2"]
 
-saveTagsForEmail :: String -> Tags -> Handler String
-saveTagsForEmail _ _ = return "saved"
+saveTagsForEmail :: String -> Tags -> Handler Saved
+saveTagsForEmail _ _ = return $ Saved "ok"
 
 type SearchAPI = "xxx" :> Capture "query" String :> Get '[ JSON] SearchRes
 
