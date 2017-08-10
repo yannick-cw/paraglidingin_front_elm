@@ -25,20 +25,24 @@ instance ElmType Tags
 
 instance FromJSON Tags
 
-newtype SearchResults = SearchResults
-  { results :: [SearchResult]
+data SearchResults = SearchResults
+  { tag :: String
+  , results :: [SearchResult]
   } deriving (Generic)
 
 instance ToJSON SearchResults
+instance FromJSON SearchResults
 
 instance ElmType SearchResults
 
 data SearchResult = SearchResult
-  { header :: String
-  , text   :: String
-  , img    :: String
+  { title       :: String
+  , imgSrc      :: String
+  , href        :: String
+  , description :: String
   } deriving (Generic)
 
+instance FromJSON SearchResult
 instance ToJSON SearchResult
 
 instance ElmType SearchResult
@@ -51,9 +55,8 @@ instance ToJSON Saved
 
 instance ElmType Saved
 
-type ParaApi = "search" :> ReqBody '[ JSON] Tags :> Post '[ JSON] SearchResults
- :<|> "email" :> Capture "EMAIL" String :> Get '[ JSON] Tags
- :<|> "save" :> Capture "email" String :> ReqBody '[ JSON] Tags :> Post '[ JSON] Saved
+type ParaApi
+   = "search" :> ReqBody '[ JSON] Tags :> Post '[ JSON] [SearchResults] :<|> "email" :> Capture "EMAIL" String :> Get '[ JSON] Tags :<|> "save" :> Capture "email" String :> ReqBody '[ JSON] Tags :> Post '[ JSON] Saved
 
 type WebServiceApi = ParaApi :<|> Raw
 

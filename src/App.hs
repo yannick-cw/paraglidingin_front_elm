@@ -16,7 +16,7 @@ import           Servant
 import           System.IO.Error
 
 paraServer :: Server ParaApi
-paraServer = searchForTags :<|> fetchTagsForEmail :<|> saveTagsForEmail
+paraServer = fetchSearch :<|> tagsForEmail :<|> saveTagsForEmail
 
 server :: Server WebServiceApi
 server = paraServer :<|> serveDirectory "./var/www"
